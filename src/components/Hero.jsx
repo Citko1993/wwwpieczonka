@@ -7,7 +7,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Link from 'next/link';
 import { FaChevronDown } from 'react-icons/fa';
 import Image from 'next/image';
-import { useAudio } from './AudioContext';
 
 export default function Hero() {
   const backgroundRef = useRef(null);
@@ -15,16 +14,6 @@ export default function Hero() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [scrollPosition, setScrollPosition] = useState(0);
   const containerRef = useRef(null);
-  const [isMounted, setIsMounted] = useState(false);
-  
-  // Inicjalizacja po renderowaniu po stronie klienta
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-  
-  // Pobieramy playSound tylko po stronie klienta
-  const audio = isMounted ? useAudio() : { playSound: () => {} };
-  const { playSound } = audio;
   
   // Śledzenie pozycji myszy
   useEffect(() => {
@@ -140,29 +129,20 @@ export default function Hero() {
   const handleButtonClick = (e, target) => {
     e.preventDefault();
     
-    // Odtwórz dźwięk po kliknięciu
-    playSound();
+    // Przewiń do sekcji
+    const targetId = target.replace('#', '');
+    const element = document.getElementById(targetId);
     
-    // Opóźnij przewijanie do sekcji, aby dać czas na wyświetlenie zdjęcia
-    setTimeout(() => {
-      const targetId = target.replace('#', '');
-      const element = document.getElementById(targetId);
-      
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 1000);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   const scrollDown = () => {
-    playSound();
-    
-    setTimeout(() => {
-      const overviewSection = document.getElementById('overview');
-      if (overviewSection) {
-        overviewSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 1000);
+    const overviewSection = document.getElementById('overview');
+    if (overviewSection) {
+      overviewSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   };
 
   return (
