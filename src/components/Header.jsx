@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { FaBars, FaTimes } from 'react-icons/fa';
-import { useAudio } from './AudioContext';
 
 const navLinks = [
   { name: 'Start', href: '#hero' },
@@ -17,7 +16,6 @@ const navLinks = [
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { playSound } = useAudio();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,21 +30,15 @@ export default function Header() {
   const handleNavClick = (e, href) => {
     e.preventDefault();
     
-    // Odtwórz dźwięk
-    playSound();
+    const targetId = href.replace('#', '');
+    const element = document.getElementById(targetId);
     
-    // Opóźnij przewijanie
-    setTimeout(() => {
-      const targetId = href.replace('#', '');
-      const element = document.getElementById(targetId);
-      
-      if (element) {
-        // Standardowe przewijanie
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-      
-      setIsMenuOpen(false);
-    }, 1000);
+    if (element) {
+      // Standardowe przewijanie
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    
+    setIsMenuOpen(false);
   };
 
   return (
