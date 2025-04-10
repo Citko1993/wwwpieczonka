@@ -15,7 +15,16 @@ export default function Hero() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [scrollPosition, setScrollPosition] = useState(0);
   const containerRef = useRef(null);
-  const { playSound } = useAudio();
+  const [isMounted, setIsMounted] = useState(false);
+  
+  // Inicjalizacja po renderowaniu po stronie klienta
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  
+  // Pobieramy playSound tylko po stronie klienta
+  const audio = isMounted ? useAudio() : { playSound: () => {} };
+  const { playSound } = audio;
   
   // Śledzenie pozycji myszy
   useEffect(() => {
