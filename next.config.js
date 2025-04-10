@@ -1,9 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
-  basePath: process.env.NODE_ENV === 'production' ? '/wwwpieczonka' : '',
   images: {
     unoptimized: true,
+    domains: ['jaroslaw-pieczonka.b-cdn.net', 's.lubimyczytac.pl', 'img.youtube.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
 };
 

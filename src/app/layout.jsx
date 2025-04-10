@@ -3,6 +3,7 @@ import '../styles/globals.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { AudioProvider } from '../components/AudioContext';
+import SmoothScroll from '../components/SmoothScroll';
 
 const oswald = Oswald({
   subsets: ['latin', 'latin-ext'],
@@ -34,13 +35,15 @@ export default function RootLayout({ children }) {
   return (
     <html lang="pl" className={`${oswald.variable} ${roboto.variable} ${specialElite.variable}`}>
       <body className="min-h-screen flex flex-col">
-        <AudioProvider>
-          <Header />
-          <main className="flex-grow">
-            {children}
-          </main>
-          <Footer />
-        </AudioProvider>
+        <SmoothScroll>
+          <AudioProvider>
+            <Header />
+            <main className="flex-grow">
+              {children}
+            </main>
+            <Footer />
+          </AudioProvider>
+        </SmoothScroll>
       </body>
     </html>
   );
