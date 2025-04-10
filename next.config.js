@@ -12,7 +12,6 @@ const nextConfig = {
   },
   productionBrowserSourceMaps: false,
   transpilePackages: ['@studio-freight/lenis'],
-  output: process.env.NODE_ENV === 'production' ? undefined : 'export',
 };
 
 module.exports = nextConfig;
