@@ -1,12 +1,4 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
-  images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**',
-      },
-    ],
-  },
-  transpilePackages: ['@studio-freight/lenis'],
+  // Pusta konfiguracja
 };

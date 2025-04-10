@@ -1,0 +1,5 @@
+[33m49199de[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Usunięcie duplikatu page.js i poprawienie konfiguracji ESLint
+[33md99a4ff[m Maksymalnie uproszczona konfiguracja Next.js
+[33mf514d38[m Fix build configuration for Vercel deployment - remove output setting
+[33m9823cf4[m Fix Next.js configuration for Vercel deployment - comprehensive update
+[33m628dc14[m Fix Next.js configuration for Vercel deployment
