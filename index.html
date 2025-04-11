@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M1AM1 | Operacja WWW</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600&family=Roboto+Mono:wght@400;500&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --red-accent: #B91C1C;
+            --red-hover: #DC2626;
+            --black-bg: #0A0A0A;
+            --text-shadow: 0 0 10px rgba(185, 28, 28, 0.3);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink {
+            50% { border-color: transparent }
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--black-bg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: white;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(90deg, 
+                    rgba(185, 28, 28, 0.03) 1px, 
+                    transparent 1px
+                ) 50% 50% / 20px 20px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyBAMAAADsEZWCAAAAGFBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVfJ92AAAACHRSTlMAGgYPKRERKS1zd5sAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAAySURBVDjLY2AgErBAqf9EKGBgYIwAsR0IMwAVsCKxGVDVQ5XALEQoQPAJEQpGFQxJBQDMZhEr8btvmwAAAABJRU5ErkJggg==');
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(185, 28, 28, 0.1);
+            z-index: 2;
+            animation: scanline 4s linear infinite;
+            pointer-events: none;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 350px;
+            padding: 20px;
+            position: relative;
+            z-index: 3;
+        }
+        
+        .profile-section {
+            width: 200px;
+            height: 200px;
+            position: relative;
+            margin: 0 auto 3rem;
+        }
+
+        .profile-picture {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px var(--red-accent),
+                       0 0 30px rgba(185, 28, 28, 0.5);
+            overflow: hidden;
+        }
+        
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(0.3) contrast(1.1) brightness(0.9);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .profile-image:hover {
+            filter: grayscale(0) contrast(1.2) brightness(1);
+        }
+
+        .declassified {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background-color: transparent;
+            color: var(--red-accent);
+            padding: 5px 15px;
+            transform: rotate(15deg);
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(185, 28, 28, 0.3);
+            border: 2px solid var(--red-accent);
+        }
+        
+        .title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: var(--text-shadow);
+            animation: fadeIn 1s ease-out;
+            text-align: center;
+        }
+
+        .description {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin: 1rem 0 2rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .codename {
+            font-family: 'Roboto Mono', monospace;
+            color: var(--red-accent);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+            opacity: 0.9;
+            text-align: center;
+        }
+        
+        .terminal {
+            background: rgba(185, 28, 28, 0.05);
+            padding: 1.5rem;
+            border: 1px solid var(--red-accent);
+            margin-bottom: 2rem;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terminal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--red-accent);
+            opacity: 0.3;
+        }
+
+        .terminal-line {
+            margin-bottom: 0.8rem;
+            white-space: nowrap;
+            overflow: hidden;
+            animation: typing 3s steps(40, end);
+        }
+
+        .terminal-line:last-child {
+            margin-bottom: 0;
+        }
+
+        .status {
+            color: var(--red-accent);
+            animation: pulse 2s infinite;
+        }
+
+        .contact {
+            display: inline-block;
+            width: 100%;
+            padding: 15px;
+            background-color: transparent;
+            color: var(--red-accent);
+            text-decoration: none;
+            text-transform: uppercase;
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            border: 2px solid var(--red-accent);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        .contact:hover {
+            background-color: var(--red-accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .timestamp {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--red-accent);
+            margin-top: 2rem;
+            opacity: 0.7;
+            text-align: center;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                max-width: 600px;
+            }
+            
+            .profile-section {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .title {
+                font-size: 3rem;
+            }
+            
+            .codename {
+                font-size: 1.2rem;
+            }
+            
+            .terminal {
+                font-size: 1rem;
+                padding: 2rem;
+            }
+
+            .contact {
+                width: auto;
+                padding: 15px 40px;
+            }
+
+            .declassified {
+                font-size: 1.1rem;
+                padding: 8px 20px;
+            }
+        }
+
+        .contact-button {
+            background-color: #B91C1C;
+            color: white;
+            padding: 1rem 2rem;
+            border: 2px solid #B91C1C;
+            border-radius: 0.5rem;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(185, 28, 28, 0.3);
+        }
+
+        .contact-button:hover {
+            background-color: #B91C1C;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(185, 28, 28, 0.5);
+        }
+
+        .contact-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.1),
+                transparent
+            );
+            transform: translateX(-100%);
+            transition: 0.5s;
+        }
+
+        .contact-button:hover::after {
+            transform: translateX(100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="noise"></div>
+    <div class="scanline"></div>
+    <div class="container">
+        <div class="profile-section">
+            <div class="profile-picture">
+                <img class="profile-image" src="https://jaroslaw-pieczonka.b-cdn.net/jaroslaw-pieczonka-ps-majami.png" alt="Jarosław Pieczonka">
+            </div>
+            <div class="declassified">Odtajnione</div>
+        </div>
+        <h1 class="title">Jarosław Pieczonka</h1>
+        <div class="codename">> Kryptonim: Miami</div>
+        <div class="description">Kiedyś zbierałem dowody dla CBŚ. Teraz te dowody publikuję. Jarosław "Miami" Pieczonka. Nie interesuje mnie neutralność, interesuje mnie prawda – ta, która boli i która ma moc rozbić układy.</div>
+        <div class="terminal">
+            <div class="terminal-line">OPERACJA: STRONA WWW</div>
+            <div class="terminal-line status">STATUS: W TOKU</div>
+            <div class="terminal-line">...</div>
+            <div class="terminal-line">Trwa kompilacja danych.</div>
+            <div class="terminal-line">Pełny dostęp do akt zostanie wkrótce odblokowany.</div>
+            <div class="terminal-line">...</div>
+            <div class="terminal-line">PROTOKÓŁ_LOG: INICJACJA</div>
+            <div class="terminal-line">DOSTĘP: OCZEKIWANIE NA AUTORYZACJĘ</div>
+        </div>
+        <a href="mailto:miami@jaroslawpieczonka.pl" class="contact">Kontakt</a>
+        <div class="timestamp">// System w przygotowaniu //</div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarosław Pieczonka - Baner Facebook</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Roboto:wght@300;400;500;700&family=Special+Elite&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --red-accent: #B91C1C;
+            --red-hover: #DC2626;
+            --black-bg: #0A0A0A;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--black-bg);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .facebook-banner {
+            width: 100%;
+            max-width: 820px;
+            height: 312px;
+            position: relative;
+            overflow: hidden;
+            background-color: var(--black-bg);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border-radius: 8px;
+        }
+        
+        @media (max-width: 640px) {
+            .facebook-banner {
+                height: 360px;
+                max-width: 640px;
+            }
+            
+            .banner-content {
+                max-width: 90%;
+            }
+            
+            .banner-title {
+                font-size: clamp(28px, 5vw, 36px);
+                margin-bottom: 8px;
+            }
+            
+            .banner-description {
+                font-size: clamp(16px, 3vw, 18px);
+                margin-bottom: 12px;
+            }
+            
+            .banner-url {
+                padding: 8px 16px;
+                font-size: clamp(14px, 2.5vw, 16px);
+            }
+            
+            .stamp {
+                top: 15px;
+                right: 15px;
+                font-size: clamp(14px, 2.5vw, 16px);
+                padding: 4px 12px;
+            }
+            
+            .social-proof {
+                bottom: 10px;
+                right: 10px;
+                font-size: clamp(11px, 2vw, 12px);
+                padding: 4px 8px;
+            }
+        }
+        
+        .banner-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(0.3) contrast(1.1) brightness(0.8);
+            transform: scale(1.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .banner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+        
+        .banner-content {
+            max-width: 80%;
+            position: relative;
+            margin-top: 20px;
+        }
+        
+        .banner-title {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            text-transform: uppercase;
+            line-height: 1.1;
+        }
+        
+        .banner-title span {
+            color: var(--red-accent);
+            display: block;
+            font-size: 0.8em;
+            text-shadow: 0 0 10px rgba(185, 28, 28, 0.5);
+        }
+        
+        .banner-description {
+            font-family: 'Roboto', sans-serif;
+            font-size: clamp(16px, 3vw, 20px);
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            font-weight: 300;
+            line-height: 1.3;
+        }
+        
+        .banner-url {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(14px, 2.5vw, 18px);
+            background: var(--red-accent);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 0;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(185, 28, 28, 0.3);
+        }
+        
+        .banner-url:hover {
+            background: var(--red-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(220, 38, 38, 0.5);
+        }
+        
+        .stamp {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            transform: rotate(-12deg);
+            font-family: 'Special Elite', cursive;
+            color: var(--red-accent);
+            text-transform: uppercase;
+            border: 3px solid var(--red-accent);
+            padding: 5px 15px;
+            font-size: clamp(16px, 2.5vw, 20px);
+            z-index: 10;
+            box-shadow: 0 0 15px rgba(185, 28, 28, 0.3);
+            background: rgba(0,0,0,0.7);
+        }
+        
+        .social-proof {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            font-family: 'Roboto', sans-serif;
+            font-size: clamp(12px, 2vw, 14px);
+            color: rgba(255, 255, 255, 0.7);
+            text-align: right;
+            background: rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 3px;
+        }
+        
+        .glow-effect {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(185, 28, 28, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="facebook-banner">
+        <img class="banner-image" src="https://jaroslaw-pieczonka.b-cdn.net/upscaled-2x-le.png" alt="Jarosław Pieczonka">
+        <div class="glow-effect"></div>
+        <div class="banner-overlay">
+            <div class="stamp">Tajne</div>
+            <div class="banner-content">
+                <h1 class="banner-title">
+                    Jarosław Pieczonka
+                    <span>"Miami"</span>
+                </h1>
+                <p class="banner-description">Były funkcjonariusz CBŚP. Autor bestsellerowych książek o polskim świecie przestępczym.</p>
+                <a href="https://www.jaroslawpieczonka.pl" class="banner-url">www.jaroslawpieczonka.pl</a>
+            </div>
+            <div class="social-proof">
+                Ponad 100 000 sprzedanych książek
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
